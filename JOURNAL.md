@@ -79,8 +79,8 @@ Il ne contient jamais de mot de passe, de jeton ni de donnée bancaire.
 
 | N° | Question | Recommandation | Réponse de Mathis |
 |---|---|---|---|
-| 1 | Hébergeur : A Clever Cloud (France) / B Fly.io (serveur à Paris) / C Cloudflare (gratuit) | A | En attente |
-| 2 | Adresse de l'appli : A adresse gratuite de l'hébergeur / B nom de domaine personnel | A | En attente |
+| 1 | Hébergeur : A Clever Cloud (France) / B Fly.io (serveur à Paris) / C Cloudflare (gratuit) | A | Autre choix : hébergement mutualisé OVH, offre Pro, déjà payé |
+| 2 | Adresse de l'appli : A adresse gratuite de l'hébergeur / B nom de domaine personnel | A | Sous-adresse à part sur le domaine OVH de Mathis ; le site existant est conservé et ne doit pas être touché |
 | 3 | Connexion : A clé d'accès Face ID + code de secours / B mot de passe + code à 6 chiffres / C les deux | A | En attente |
 | 4 | Durée de session : A Face ID à chaque ouverture / B 7 jours / C 30 jours | B | En attente |
 | 5 | Nom sous l'icône : A « Ma journée » / B « Tableau de bord » / C autre | — | En attente |
@@ -92,3 +92,9 @@ Il ne contient jamais de mot de passe, de jeton ni de donnée bancaire.
   officiels PRONOTE ne tournent pas en PHP, un petit service complémentaire pourra être nécessaire en M3.
 - Questions posées (en attente) : 1bis nom de l'offre OVH ; 1ter nom de domaine et site déjà en place ;
   1quater confirmation du choix OVH. Questions 3, 4 et 5 toujours en attente ; la question 2 dépend de 1ter.
+
+### 10/11/2026 – Réponses sur OVH
+
+- Offre OVH : Pro. Domaine avec un site à garder : l'appli ira sur une sous-adresse séparée. OVH confirmé comme hébergeur.
+- Décision : hébergement sur le mutualisé OVH Pro de Mathis ; appli écrite en PHP avec base MySQL.
+- Restent en attente : question 3 (connexion), 4 (durée de session), 5 (nom sous l'icône).
