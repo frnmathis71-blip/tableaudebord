@@ -84,3 +84,11 @@ Il ne contient jamais de mot de passe, de jeton ni de donnée bancaire.
 | 3 | Connexion : A clé d'accès Face ID + code de secours / B mot de passe + code à 6 chiffres / C les deux | A | En attente |
 | 4 | Durée de session : A Face ID à chaque ouverture / B 7 jours / C 30 jours | B | En attente |
 | 5 | Nom sous l'icône : A « Ma journée » / B « Tableau de bord » / C autre | — | En attente |
+
+### 10/11/2026 – Nouvelle piste proposée par Mathis : hébergement mutualisé OVH (déjà payé)
+
+- Avis donné : possible pour le socle (appli écrite en PHP, base MySQL), données en France, 0 € de plus.
+- Limites annoncées : tâches automatiques au mieux une fois par heure (au lieu de 15 minutes) ; les outils non
+  officiels PRONOTE ne tournent pas en PHP, un petit service complémentaire pourra être nécessaire en M3.
+- Questions posées (en attente) : 1bis nom de l'offre OVH ; 1ter nom de domaine et site déjà en place ;
+  1quater confirmation du choix OVH. Questions 3, 4 et 5 toujours en attente ; la question 2 dépend de 1ter.
