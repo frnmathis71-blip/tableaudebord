@@ -7,7 +7,7 @@ Il ne contient jamais de mot de passe, de jeton ni de donnée bancaire.
 
 | Mission | Sujet | État |
 |---|---|---|
-| M0 | Cadrage (aucun code) | En cours – en attente des réponses de Mathis |
+| M0 | Cadrage (aucun code) | Terminée le 10/11/2026 (réponses reçues) |
 | M1 | Socle de l'application | Non commencée (attend « OK M1 ») |
 | M2 | Agenda Apple (iCloud) | Non commencée |
 | M3 | École (PRONOTE) | Non commencée |
@@ -38,19 +38,31 @@ Il ne contient jamais de mot de passe, de jeton ni de donnée bancaire.
 
 ## M0 – Cadrage
 
-### 10/11/2026 – Questions posées (en attente de réponse)
+### 10/11/2026 – Questions posées et réponses
 
 | N° | Question | Recommandation | Réponse de Mathis |
 |---|---|---|---|
-| 1 | Export iCal disponible dans PRONOTE ? (A oui / B non / C je ne sais pas) | Vérifier, voir procédure | En attente |
-| 2 | Connexion à PRONOTE : A directe / B via un ENT / C je ne sais pas | — | En attente |
-| 3 | Boîte mail : A Gmail / B iCloud / C Outlook / D mail de l'école | — (sert en V2) | En attente |
-| 4 | Budget mensuel : A 0 € / B jusqu'à 10 € / C jusqu'à 20 € | B | En attente |
-| 5 | Niveau d'action de l'IA : A lecture seule / B brouillons / C actions validées | B | En attente |
-| 6 | Brief du matin : A règles sans IA / B rédigé par une IA | A pour le MVP | En attente |
-| 7 | Option technique : A PWA + hébergement géré en Europe / B PWA + serveur personnel / C application native | A | En attente |
-| 8 | Widget iOS : A pas de widget / B widget via l'appli Scriptable après le MVP / C widget natif | B | En attente |
+| 1 | Export iCal disponible dans PRONOTE ? (A oui / B non / C je ne sais pas) | Vérifier, voir procédure | B – non, pas d'icône iCal |
+| 2 | Connexion à PRONOTE : A directe / B via un ENT / C je ne sais pas | — | B – via un ENT |
+| 3 | Boîte mail : A Gmail / B iCloud / C Outlook / D mail de l'école | — (sert en V2) | A – Gmail |
+| 4 | Budget mensuel : A 0 € / B jusqu'à 10 € / C jusqu'à 20 € | B | B – jusqu'à 10 € par mois |
+| 5 | Niveau d'action de l'IA : A lecture seule / B brouillons / C actions validées | B | B – brouillons |
+| 6 | Brief du matin : A règles sans IA / B rédigé par une IA | A pour le MVP | A – règles sans IA |
+| 7 | Option technique : A PWA + hébergement géré en Europe / B PWA + serveur personnel / C application native | A | A – PWA + hébergement géré en Europe |
+| 8 | Widget iOS : A pas de widget / B widget via l'appli Scriptable après le MVP / C widget natif | B | B – widget Scriptable après M6 |
 
 ### Décisions
 
-Aucune pour l'instant (en attente des réponses).
+- Option technique retenue : PWA installable sur iPhone, hébergement géré en Europe (hébergeur à choisir en M1).
+- Budget : 10 € par mois au maximum.
+- IA : elle peut préparer des brouillons, que Mathis envoie lui-même. Aucune action à sa place.
+- Brief du matin du MVP : règles fixes, sans IA.
+- Widget : via l'appli Scriptable, après M6.
+- Boîte mail (pour M8) : Gmail.
+
+### Risque identifié pour M3 (PRONOTE)
+
+- Pas d'export iCal et connexion via un ENT : c'est le cas le plus difficile. Il ne reste que la piste
+  « bibliothèque non officielle », dont la faisabilité dépend de l'ENT utilisé (à demander au début de M3).
+- Solutions de repli à étudier en M3 : demander à l'établissement d'activer l'export iCal, connexion par
+  QR code de l'appli PRONOTE, ou saisie manuelle de l'emploi du temps.
