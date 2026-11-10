@@ -129,3 +129,8 @@ Tests automatiques (données fictives, base de test locale) – tous réussis :
 Non testé à ce stade (impossible sans la mise en ligne) :
 - Face ID réel sur iPhone, installation sur l'écran d'accueil, vitesse réelle chez OVH.
 - La liaison Git d'OVH : le guide a été écrit sans accès au site d'OVH, les menus sont à confirmer.
+
+### 10/11/2026 – Mise en ligne
+
+- Question : Mathis a-t-il un ordinateur pour la mise en ligne ? Réponse : A – oui.
+- En attente : mise en ligne par Mathis selon `docs/INSTALLATION_OVH.md`, puis ses 5 vérifications sur iPhone.
