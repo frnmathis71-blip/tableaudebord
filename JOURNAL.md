@@ -8,7 +8,7 @@ Il ne contient jamais de mot de passe, de jeton ni de donnée bancaire.
 | Mission | Sujet | État |
 |---|---|---|
 | M0 | Cadrage (aucun code) | Terminée le 10/11/2026 (réponses reçues) |
-| M1 | Socle de l'application | Non commencée (attend « OK M1 ») |
+| M1 | Socle de l'application | En cours – accord « OK M1 » reçu le 10/11/2026, questions préalables posées |
 | M2 | Agenda Apple (iCloud) | Non commencée |
 | M3 | École (PRONOTE) | Non commencée |
 | M4 | Pro et URSSAF | Non commencée |
@@ -66,3 +66,21 @@ Il ne contient jamais de mot de passe, de jeton ni de donnée bancaire.
   « bibliothèque non officielle », dont la faisabilité dépend de l'ENT utilisé (à demander au début de M3).
 - Solutions de repli à étudier en M3 : demander à l'établissement d'activer l'export iCal, connexion par
   QR code de l'appli PRONOTE, ou saisie manuelle de l'emploi du temps.
+
+## M1 – Socle de l'application
+
+### 10/11/2026 – Accord et recherche préalable
+
+- Accord écrit reçu : « Ok m1 ».
+- Recherche des tarifs d'hébergement faite par recherche web uniquement : les sites des hébergeurs ne sont pas
+  joignables depuis l'environnement de travail. Les prix restent donc à confirmer par Mathis à l'inscription.
+
+### 10/11/2026 – Questions posées (en attente de réponse)
+
+| N° | Question | Recommandation | Réponse de Mathis |
+|---|---|---|---|
+| 1 | Hébergeur : A Clever Cloud (France) / B Fly.io (serveur à Paris) / C Cloudflare (gratuit) | A | En attente |
+| 2 | Adresse de l'appli : A adresse gratuite de l'hébergeur / B nom de domaine personnel | A | En attente |
+| 3 | Connexion : A clé d'accès Face ID + code de secours / B mot de passe + code à 6 chiffres / C les deux | A | En attente |
+| 4 | Durée de session : A Face ID à chaque ouverture / B 7 jours / C 30 jours | B | En attente |
+| 5 | Nom sous l'icône : A « Ma journée » / B « Tableau de bord » / C autre | — | En attente |
