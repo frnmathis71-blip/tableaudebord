@@ -8,7 +8,7 @@ Il ne contient jamais de mot de passe, de jeton ni de donnée bancaire.
 | Mission | Sujet | État |
 |---|---|---|
 | M0 | Cadrage (aucun code) | Terminée le 10/11/2026 (réponses reçues) |
-| M1 | Socle de l'application | En cours – accord « OK M1 » reçu le 10/11/2026, questions préalables posées |
+| M1 | Socle de l'application | Code écrit et testé le 10/11/2026 – en attente de la mise en ligne par Mathis et de ses vérifications sur iPhone |
 | M2 | Agenda Apple (iCloud) | Non commencée |
 | M3 | École (PRONOTE) | Non commencée |
 | M4 | Pro et URSSAF | Non commencée |
@@ -75,15 +75,15 @@ Il ne contient jamais de mot de passe, de jeton ni de donnée bancaire.
 - Recherche des tarifs d'hébergement faite par recherche web uniquement : les sites des hébergeurs ne sont pas
   joignables depuis l'environnement de travail. Les prix restent donc à confirmer par Mathis à l'inscription.
 
-### 10/11/2026 – Questions posées (en attente de réponse)
+### 10/11/2026 – Questions posées et réponses
 
 | N° | Question | Recommandation | Réponse de Mathis |
 |---|---|---|---|
 | 1 | Hébergeur : A Clever Cloud (France) / B Fly.io (serveur à Paris) / C Cloudflare (gratuit) | A | Autre choix : hébergement mutualisé OVH, offre Pro, déjà payé |
 | 2 | Adresse de l'appli : A adresse gratuite de l'hébergeur / B nom de domaine personnel | A | Sous-adresse à part sur le domaine OVH de Mathis ; le site existant est conservé et ne doit pas être touché |
-| 3 | Connexion : A clé d'accès Face ID + code de secours / B mot de passe + code à 6 chiffres / C les deux | A | En attente |
-| 4 | Durée de session : A Face ID à chaque ouverture / B 7 jours / C 30 jours | B | En attente |
-| 5 | Nom sous l'icône : A « Ma journée » / B « Tableau de bord » / C autre | — | En attente |
+| 3 | Connexion : A clé d'accès Face ID + code de secours / B mot de passe + code à 6 chiffres / C les deux | A | A – clé d'accès Face ID + code de secours |
+| 4 | Durée de session : A Face ID à chaque ouverture / B 7 jours / C 30 jours | B | B – 7 jours |
+| 5 | Nom sous l'icône : A « Ma journée » / B « Tableau de bord » / C autre | — | B – « Tableau de bord » |
 
 ### 10/11/2026 – Nouvelle piste proposée par Mathis : hébergement mutualisé OVH (déjà payé)
 
@@ -97,4 +97,35 @@ Il ne contient jamais de mot de passe, de jeton ni de donnée bancaire.
 
 - Offre OVH : Pro. Domaine avec un site à garder : l'appli ira sur une sous-adresse séparée. OVH confirmé comme hébergeur.
 - Décision : hébergement sur le mutualisé OVH Pro de Mathis ; appli écrite en PHP avec base MySQL.
-- Restent en attente : question 3 (connexion), 4 (durée de session), 5 (nom sous l'icône).
+- Questions 3, 4 et 5 répondues ensuite (voir le tableau ci-dessus).
+
+### 10/11/2026 – Réalisation du socle
+
+Ce qui a été fait :
+- Appli en PHP (sans cadre de développement lourd), base MySQL, une seule bibliothèque externe pour les clés d'accès
+  (lbuchs/webauthn, licence MIT), fournie dans le dépôt pour ne rien avoir à installer chez OVH.
+- Connexion par clé d'accès (Face ID) uniquement, code de secours à usage unique, session de 7 jours,
+  liste des appareils connectés avec déconnexion à distance.
+- Page « Aujourd'hui » vide avec 4 modules (Agenda, École, Pro et URSSAF, Recherche de stage) que l'on peut
+  monter, descendre et masquer ; l'ordre est enregistré.
+- Mode sombre, mise en page iPhone, icône, installable sur l'écran d'accueil, page « Pas de connexion ».
+- Page d'installation qui crée la configuration sur le serveur (aucun secret dans le dépôt).
+- Socle de sécurité : journal des accès, chiffrement prêt pour les identifiants des sources (M2), blocage après
+  plusieurs tentatives ratées, protections contre les requêtes venant d'autres sites.
+
+Décisions techniques prises sans question (sans effet sur les données ou les préférences de Mathis) :
+- Déplacement des modules par flèches plutôt que par glisser-déposer : plus fiable au pouce sur iPhone.
+- Tout le trafic passe par le dossier `public/` : le code, la configuration et ce journal sont inaccessibles
+  depuis Internet, même si OVH installe le dépôt à la racine de la sous-adresse.
+
+Tests automatiques (données fictives, base de test locale) – tous réussis :
+- 51 tests internes (sessions de 7 jours, code de secours, chiffrement, modules, dates en heure de Paris).
+- 70 tests dans un navigateur à la taille d'un iPhone, passés sur deux serveurs (PHP seul, et Apache comme OVH) :
+  installation, connexion, déconnexion, accès refusé sans authentification, clé inconnue refusée, session expirée,
+  code de secours, déconnexion à distance, fichiers internes illisibles, page affichée en 20 à 25 ms en local.
+- Problème trouvé et corrigé pendant les tests : le formulaire d'installation était refusé à cause d'un réglage de
+  confidentialité trop strict (l'appli ne reconnaissait plus sa propre adresse).
+
+Non testé à ce stade (impossible sans la mise en ligne) :
+- Face ID réel sur iPhone, installation sur l'écran d'accueil, vitesse réelle chez OVH.
+- La liaison Git d'OVH : le guide a été écrit sans accès au site d'OVH, les menus sont à confirmer.

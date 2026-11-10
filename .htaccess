@@ -1,0 +1,10 @@
+# Tout le trafic passe par le dossier public/ : le code, la configuration
+# et le journal du projet ne sont jamais accessibles depuis Internet.
+Options -Indexes
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteRule ^(.*)$ public/$1 [L]
+</IfModule>
+<IfModule !mod_rewrite.c>
+    Require all denied
+</IfModule>

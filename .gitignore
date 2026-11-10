@@ -1,0 +1,9 @@
+# Secrets et fichiers locaux : jamais dans le dépôt
+/config/config.php
+/tableaudebord-config.php
+*.sqlite
+/tests/.tmp/
+node_modules/
+# Fichiers de démonstration de la bibliothèque, inutiles en production
+/vendor/lbuchs/webauthn/_test/
+/vendor/**/.git
