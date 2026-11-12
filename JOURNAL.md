@@ -140,3 +140,7 @@ Non testé à ce stade (impossible sans la mise en ligne) :
 - Demande : passer l'interface en style translucide.
 - Questions posées (en attente) : 1 référence visée (Liquid Glass iOS 26 / verre dépoli classique) ;
   2 fond derrière le verre ; 3 éléments concernés ; 4 modèle d'iPhone (fluidité).
+- Réponse à la question 1 : capture d'un « Glassy Dashboard » (vidéo TikTok) comme référence : cartes en verre
+  dépoli clair sur photo d'intérieur floutée aux tons chauds, accents jaunes, quelques cartes sombres.
+- Point relevé : la référence est claire, alors que le cahier des charges demande un mode sombre.
+- Nouvelles questions posées (en attente) : clair ou sombre, fond, couleur d'accent ; questions 3 et 4 toujours en attente.
