@@ -1,17 +1,22 @@
-/* Tableau de bord — thème sombre, pensé pour l'iPhone tenu d'une main. */
+/* Tableau de bord — thème sombre « verre fumé » : panneaux translucides et flous
+   posés sur un fond chaud, accent jaune doré. Pensé pour l'iPhone tenu d'une main. */
 :root {
     color-scheme: dark;
-    --fond: #0e1116;
-    --surface: #171b22;
-    --surface-2: #1f242d;
-    --bord: #2a303b;
-    --texte: #eef1f5;
-    --discret: #9aa4b2;
-    --accent: #7c9cff;
-    --accent-texte: #0b1020;
-    --danger: #ff8a80;
-    --ok: #6fd6a0;
-    --rayon: 18px;
+    --fond: #120e0a;
+    --verre: rgba(255, 244, 228, 0.07);
+    --verre-fort: rgba(255, 244, 228, 0.12);
+    --verre-sombre: rgba(10, 8, 6, 0.45);
+    --bord: rgba(255, 240, 220, 0.14);
+    --reflet: inset 0 1px 0 rgba(255, 255, 255, 0.14);
+    --ombre: 0 10px 30px rgba(0, 0, 0, 0.35);
+    --flou: blur(22px) saturate(160%);
+    --texte: #f7f2ea;
+    --discret: #bfb4a5;
+    --accent: #f5c84c;
+    --accent-texte: #1d1607;
+    --danger: #ff9a8a;
+    --ok: #8fdcaa;
+    --rayon: 22px;
     --gouttiere: 16px;
     --bas: env(safe-area-inset-bottom, 0px);
     --haut: env(safe-area-inset-top, 0px);
@@ -27,12 +32,27 @@ html {
 body {
     margin: 0;
     min-height: 100dvh;
-    background: var(--fond);
+    background: transparent; /* laisse voir le fond chaud placé derrière (body::before) */
     color: var(--texte);
     font: 17px/1.45 -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, sans-serif;
     -webkit-font-smoothing: antialiased;
     -webkit-tap-highlight-color: transparent;
     overscroll-behavior-y: none;
+}
+
+/* Fond chaud et flou derrière le verre (fixe : il ne défile pas avec la page). */
+body::before {
+    content: "";
+    position: fixed;
+    inset: -10%;
+    z-index: -1;
+    background:
+        radial-gradient(40% 35% at 15% 10%, rgba(214, 140, 58, 0.55), transparent 70%),
+        radial-gradient(45% 40% at 90% 25%, rgba(150, 92, 48, 0.50), transparent 70%),
+        radial-gradient(50% 45% at 30% 85%, rgba(120, 70, 40, 0.55), transparent 70%),
+        radial-gradient(35% 30% at 85% 90%, rgba(245, 200, 76, 0.22), transparent 70%),
+        linear-gradient(160deg, #2a1d13 0%, #17110c 55%, #0f0b08 100%);
+    filter: blur(30px);
 }
 
 .page {
@@ -41,7 +61,7 @@ body {
     padding: calc(var(--haut) + 20px) var(--gouttiere) calc(var(--bas) + 28px);
 }
 
-.avec-onglets .page { padding-bottom: calc(var(--bas) + 96px); }
+.avec-onglets .page { padding-bottom: calc(var(--bas) + 104px); }
 
 h1, h2, h3, p { margin: 0; }
 h1 { font-size: 32px; line-height: 1.15; letter-spacing: -0.02em; font-weight: 750; }
@@ -61,17 +81,25 @@ h3 { font-size: 17px; font-weight: 650; }
 
 .entete { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 20px; }
 
+/* --- Panneaux en verre --- */
+.carte, .alerte, .message, .onglets {
+    -webkit-backdrop-filter: var(--flou);
+    backdrop-filter: var(--flou);
+}
+
 .carte {
-    background: var(--surface);
+    background: var(--verre);
     border: 1px solid var(--bord);
     border-radius: var(--rayon);
+    box-shadow: var(--reflet), var(--ombre);
     padding: 16px;
 }
 
 .pile { display: flex; flex-direction: column; gap: 12px; }
 .page > section + section, .page > .pile { margin-top: 16px; }
 
-.vide { text-align: center; padding: 28px 16px; }
+/* Carte « vide » plus sombre, pour le contraste avec les autres. */
+.vide { text-align: center; padding: 28px 16px; background: var(--verre-sombre); }
 .vide-titre { font-weight: 650; margin-bottom: 4px; }
 
 .titre-section {
@@ -86,8 +114,9 @@ h3 { font-size: 17px; font-weight: 650; }
 .module.masque { display: none; }
 
 .module-icone {
-    flex: none; width: 44px; height: 44px; border-radius: 13px;
-    background: var(--surface-2); color: var(--accent);
+    flex: none; width: 44px; height: 44px; border-radius: 14px;
+    background: var(--verre-fort); color: var(--accent);
+    border: 1px solid var(--bord); box-shadow: var(--reflet);
     display: grid; place-items: center;
 }
 
@@ -96,23 +125,25 @@ h3 { font-size: 17px; font-weight: 650; }
 
 .pastille {
     display: inline-block; font-size: 13px; color: var(--discret);
-    background: var(--surface-2); border-radius: 999px; padding: 3px 10px;
+    background: var(--verre-sombre); border: 1px solid var(--bord);
+    border-radius: 999px; padding: 3px 10px;
 }
 
 .module-outils { display: none; flex: none; gap: 6px; }
 
-.organisation .module-outils { display: flex; flex-direction: column; }
+.organisation .module-outils { display: flex; flex-direction: row; }
 .organisation .module.masque { display: flex; opacity: 0.45; }
-.organisation .module-texte .pastille { display: none; }
+.organisation .module-texte .pastille,
+.organisation .module-texte .discret { display: none; }
 
 .outil {
-    width: 44px; height: 44px; border-radius: 12px;
-    border: 1px solid var(--bord); background: var(--surface-2); color: var(--texte);
+    width: 44px; height: 44px; border-radius: 14px;
+    border: 1px solid var(--bord); background: var(--verre-fort); color: var(--texte);
+    box-shadow: var(--reflet);
     display: grid; place-items: center; padding: 0; cursor: pointer;
 }
 .outil:disabled { opacity: 0.3; }
 .outil[aria-pressed="false"] { color: var(--discret); }
-.organisation .module-outils { flex-direction: row; }
 
 .aide-organiser { margin-top: 12px; text-align: center; }
 
@@ -122,11 +153,14 @@ h3 { font-size: 17px; font-weight: 650; }
 .bouton {
     display: flex; align-items: center; justify-content: center; gap: 10px;
     width: 100%; min-height: 52px; padding: 12px 18px;
-    border-radius: 14px; border: 1px solid var(--bord);
-    background: var(--surface-2); color: var(--texte);
+    border-radius: 16px; border: 1px solid var(--bord);
+    background: var(--verre-fort); color: var(--texte); box-shadow: var(--reflet);
     font: inherit; font-weight: 600; text-decoration: none; cursor: pointer;
 }
-.bouton.principal { background: var(--accent); border-color: var(--accent); color: var(--accent-texte); }
+.bouton.principal {
+    background: var(--accent); border-color: rgba(255, 255, 255, 0.35); color: var(--accent-texte);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5), 0 8px 24px rgba(245, 200, 76, 0.25);
+}
 .bouton.danger { color: var(--danger); }
 .bouton.petit { width: auto; min-height: 40px; padding: 8px 14px; font-size: 15px; flex: none; }
 .bouton:disabled { opacity: 0.45; cursor: default; }
@@ -143,21 +177,22 @@ label { font-size: 15px; font-weight: 600; }
 
 input[type="text"], input[type="password"] {
     width: 100%; min-height: 50px; padding: 10px 14px;
-    border-radius: 12px; border: 1px solid var(--bord);
-    background: var(--fond); color: var(--texte);
+    border-radius: 14px; border: 1px solid var(--bord);
+    background: var(--verre-sombre); color: var(--texte);
     font: inherit; /* 17px : évite le zoom automatique de l'iPhone */
 }
+input::placeholder { color: rgba(191, 180, 165, 0.6); }
 
 .case { display: flex; align-items: center; gap: 10px; font-weight: 500; font-size: 16px; }
 .case input { width: 24px; height: 24px; accent-color: var(--accent); flex: none; }
 
 /* --- Pages centrées (connexion, installation) --- */
 .centre { display: flex; flex-direction: column; gap: 18px; padding-top: 6vh; }
-.centre .logo { border-radius: 20px; }
+.centre .logo { border-radius: 20px; box-shadow: var(--ombre); }
 
 .alerte {
-    background: #2a1f1d; border: 1px solid #5a3a35; color: #ffd0ca;
-    border-radius: 14px; padding: 12px 14px; font-size: 15px;
+    background: rgba(90, 40, 30, 0.45); border: 1px solid rgba(255, 154, 138, 0.35); color: #ffd6cc;
+    border-radius: 16px; padding: 12px 14px; font-size: 15px;
 }
 
 .secours summary { color: var(--accent); font-weight: 600; cursor: pointer; padding: 10px 0; }
@@ -166,7 +201,7 @@ input[type="text"], input[type="password"] {
 .code-secours {
     font: 600 19px/1.5 ui-monospace, "SF Mono", Menlo, monospace;
     letter-spacing: 0.04em; text-align: center; word-break: break-word;
-    background: var(--fond); border: 1px dashed var(--accent); border-radius: 14px; padding: 14px 10px;
+    background: var(--verre-sombre); border: 1px dashed var(--accent); border-radius: 16px; padding: 14px 10px;
     user-select: all; -webkit-user-select: all;
 }
 
@@ -179,32 +214,33 @@ input[type="text"], input[type="password"] {
 .liste li:first-child { border-top: 0; padding-top: 4px; }
 .liste strong { display: block; font-weight: 600; }
 
-/* --- Barre d'onglets, à portée de pouce --- */
+/* --- Barre d'onglets flottante en verre, à portée de pouce --- */
 .onglets {
-    position: fixed; left: 0; right: 0; bottom: 0; z-index: 10;
-    display: flex; justify-content: center; gap: 8px;
-    padding: 8px var(--gouttiere) calc(var(--bas) + 8px);
-    background: rgba(14, 17, 22, 0.88);
-    -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px);
-    border-top: 1px solid var(--bord);
+    position: fixed; z-index: 10;
+    left: var(--gouttiere); right: var(--gouttiere); bottom: calc(var(--bas) + 10px);
+    max-width: 420px; margin: 0 auto;
+    display: flex; justify-content: center; gap: 6px; padding: 6px;
+    background: rgba(36, 27, 20, 0.78);
+    border: 1px solid var(--bord); border-radius: 26px;
+    box-shadow: var(--reflet), 0 12px 32px rgba(0, 0, 0, 0.45);
 }
 .onglet {
-    flex: 1; max-width: 220px; min-height: 52px;
+    flex: 1; min-height: 56px;
     display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
-    color: var(--discret); text-decoration: none; font-size: 12px; font-weight: 600; border-radius: 12px;
+    color: var(--discret); text-decoration: none; font-size: 12px; font-weight: 600; border-radius: 20px;
 }
-.onglet.actif { color: var(--accent); }
+.onglet.actif { color: var(--accent); background: var(--verre-fort); box-shadow: var(--reflet); }
 
 /* --- Message temporaire --- */
 .message {
     position: fixed; left: var(--gouttiere); right: var(--gouttiere);
-    bottom: calc(var(--bas) + 92px); z-index: 20;
+    bottom: calc(var(--bas) + 96px); z-index: 20;
     max-width: 528px; margin: 0 auto;
-    background: var(--surface-2); border: 1px solid var(--bord); border-radius: 14px;
+    background: rgba(40, 30, 22, 0.75); border: 1px solid var(--bord); border-radius: 16px;
     padding: 12px 16px; font-size: 15px; text-align: center;
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+    box-shadow: var(--reflet), 0 8px 30px rgba(0, 0, 0, 0.5);
 }
-.message.erreur { border-color: #5a3a35; color: #ffd0ca; }
+.message.erreur { border-color: rgba(255, 154, 138, 0.45); color: #ffd6cc; }
 
 [hidden] { display: none !important; }
 
@@ -212,5 +248,13 @@ input[type="text"], input[type="password"] {
     .bouton, .outil { transition: transform 0.08s ease; }
 }
 
-/* En mode « Organiser », on ne garde que le nom du module pour laisser la place aux flèches. */
-.organisation .module-texte .discret { display: none; }
+/* Navigateur sans effet de flou, ou réglage « Réduire la transparence » : panneaux opaques, toujours lisibles. */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .carte { background: #241b14; }
+    .onglets, .message { background: #241b14; }
+}
+@media (prefers-reduced-transparency: reduce) {
+    .carte, .alerte, .message, .onglets { -webkit-backdrop-filter: none; backdrop-filter: none; }
+    .carte, .onglets, .message { background: #241b14; }
+    .vide { background: #1a140f; }
+}

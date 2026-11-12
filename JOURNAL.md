@@ -144,3 +144,13 @@ Non testé à ce stade (impossible sans la mise en ligne) :
   dépoli clair sur photo d'intérieur floutée aux tons chauds, accents jaunes, quelques cartes sombres.
 - Point relevé : la référence est claire, alors que le cahier des charges demande un mode sombre.
 - Nouvelles questions posées (en attente) : clair ou sombre, fond, couleur d'accent ; questions 3 et 4 toujours en attente.
+
+### 12/11/2026 – Style translucide : réponses et réalisation
+
+- Réponses de Mathis : 1A version sombre (verre fumé) ; 2A fond flou chaud généré ; 3A accent jaune doré ;
+  4A tout translucide ; iPhone 15.
+- Fait : nouveau fond chaud et flou, cartes, boutons et barre d'onglets en verre fumé, barre d'onglets flottante,
+  accent doré, icône aux nouvelles couleurs, panneaux opaques si « Réduire la transparence » est actif.
+- Tests : 51 tests internes et 70 tests dans le navigateur réussis.
+- Envoyé sur la branche de travail (pas encore en ligne chez OVH) ; en attente de la validation visuelle de Mathis
+  (A garder / B ajuster / C revenir à l'ancien style, facile à annuler).

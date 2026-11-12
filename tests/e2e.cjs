@@ -91,8 +91,8 @@ const chemin = (page) => new URL(page.url()).pathname;
         /^(lundi|mardi|mercredi|jeudi|vendredi|samedi|dimanche) \d/i.test(await page.locator('.surtitre').innerText()));
     const debordement = await page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth);
     verifier('pas de défilement horizontal sur un écran d’iPhone', !debordement);
-    const fond = await page.evaluate(() => getComputedStyle(document.body).backgroundColor);
-    verifier('mode sombre', fond === 'rgb(14, 17, 22)');
+    const fond = await page.evaluate(() => getComputedStyle(document.documentElement).backgroundColor);
+    verifier('mode sombre', fond === 'rgb(18, 14, 10)');
     const petites = await page.evaluate(() => [...document.querySelectorAll('.onglet, .bouton, #organiser')]
         .filter((e) => e.offsetParent !== null && e.getBoundingClientRect().height < 40).length);
     verifier('boutons assez grands pour le pouce', petites === 0);

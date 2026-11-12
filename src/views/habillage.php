@@ -12,7 +12,7 @@ $onglet = $onglet ?? '';
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title><?= Vue::e($titre ?? 'Tableau de bord') ?> · Tableau de bord</title>
 <meta name="color-scheme" content="dark">
-<meta name="theme-color" content="#0e1116">
+<meta name="theme-color" content="#120e0a">
 <meta name="robots" content="noindex, nofollow">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">

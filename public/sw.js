@@ -1,6 +1,6 @@
 /* Service worker : rend l'appli installable et affiche une page claire sans réseau.
    Aucune donnée personnelle n'est gardée en mémoire ici : seulement l'habillage. */
-const CACHE = 'tdb-v1';
+const CACHE = 'tdb-v2';
 const FICHIERS = ['/hors-ligne.html', '/assets/icons/icone-192.png'];
 
 self.addEventListener('install', (e) => {
