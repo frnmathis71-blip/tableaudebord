@@ -134,3 +134,9 @@ Non testé à ce stade (impossible sans la mise en ligne) :
 
 - Question : Mathis a-t-il un ordinateur pour la mise en ligne ? Réponse : A – oui.
 - En attente : mise en ligne par Mathis selon `docs/INSTALLATION_OVH.md`, puis ses 5 vérifications sur iPhone.
+
+### 12/11/2026 – Demande de Mathis : style translucide
+
+- Demande : passer l'interface en style translucide.
+- Questions posées (en attente) : 1 référence visée (Liquid Glass iOS 26 / verre dépoli classique) ;
+  2 fond derrière le verre ; 3 éléments concernés ; 4 modèle d'iPhone (fluidité).
