@@ -230,3 +230,10 @@ Non testé (impossible sans la mise en ligne) :
 | 2 | Connexion : A QR code de l'appli PRONOTE / B identifiants ENT | A | En attente |
 | 3 | Risque d'un outil non officiel accepté : A oui / B non | — | En attente |
 | — | Commandes de test à lancer par Mathis en SSH (Python présent ? PRONOTE joignable ?) | — | En attente |
+
+### 13/11/2026 – Résultat du test en SSH chez OVH
+
+- Python présent mais en version 3.7.3 : trop ancienne pour pronotepy (3.8 minimum) et plus maintenue depuis 2023.
+- Le serveur PRONOTE répond depuis le SSH (code 302) : l'accès Internet sortant fonctionne au moins en SSH.
+- Nouvelle piste proposée : un Python récent installé dans l'espace de Mathis chez OVH, lancé par la tâche
+  planifiée PHP. Test supplémentaire demandé (PHP peut-il lancer un programme ?). Questions 1 à 3 toujours en attente.
