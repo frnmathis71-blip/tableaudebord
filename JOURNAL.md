@@ -203,3 +203,8 @@ Tests automatiques (données fictives) – tous réussis :
 Non testé (impossible sans la mise en ligne) :
 - Vrai lien iCloud ; délai réel entre la création d'un événement sur l'iPhone et sa publication par Apple.
 - Tâche planifiée OVH (menus du guide écrits sans accès au site d'OVH).
+
+### 13/11/2026 – Informations reçues pour M3
+
+- Adresse PRONOTE et ENT régional reçus. Ils ne sont volontairement pas recopiés ici, tant que le dépôt est public.
+- M3 non commencée : en attente de l'accord écrit « OK M3 ».
