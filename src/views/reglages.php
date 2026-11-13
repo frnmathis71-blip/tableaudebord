@@ -3,6 +3,43 @@ use Tdb\Vue;
 ?>
 <header class="entete"><div><h1>Réglages</h1></div></header>
 
+<section class="carte pile" id="agenda">
+    <h2>Agenda iCloud</h2>
+    <p class="discret">Lecture seule, par le lien de partage de chaque calendrier. Mise à jour à l’ouverture de l’appli et toutes les heures.</p>
+<?php if ($calendriers !== []): ?>
+    <ul class="liste">
+<?php foreach ($calendriers as $cal): ?>
+        <li>
+            <div>
+                <strong><?= Vue::e($cal['name']) ?></strong>
+<?php if ($cal['last_error'] !== null): ?>
+                <span class="texte-erreur"><?= Vue::e($cal['last_error']) ?></span>
+<?php endif; ?>
+                <span class="discret"><?= (int) $cal['event_count'] ?> événements · mis à jour le <?= Vue::e(Vue::dateCourte($cal['last_sync_at'])) ?></span>
+            </div>
+            <button type="button" class="bouton petit danger" data-action="supprimer-calendrier" data-id="<?= (int) $cal['id'] ?>" data-nom="<?= Vue::e($cal['name']) ?>">Retirer</button>
+        </li>
+<?php endforeach; ?>
+    </ul>
+<?php endif; ?>
+    <details class="secours"<?= $calendriers === [] ? ' open' : '' ?>>
+        <summary>Ajouter un calendrier</summary>
+        <ol class="etapes discret">
+            <li>Sur l’iPhone, ouvre l’app <strong>Calendrier</strong>, puis <strong>Calendriers</strong> en bas.</li>
+            <li>Touche le <strong>ⓘ</strong> à côté du calendrier, active <strong>Calendrier public</strong>.</li>
+            <li>Touche <strong>Partager le lien…</strong> puis <strong>Copier</strong>, et colle-le ici.</li>
+        </ol>
+        <form id="form-calendrier" class="pile">
+            <label for="cal-nom">Nom</label>
+            <input id="cal-nom" name="nom" type="text" maxlength="60" autocomplete="off" placeholder="Perso" required>
+            <label for="cal-lien">Lien de partage</label>
+            <input id="cal-lien" name="lien" type="text" inputmode="url" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="webcal://p00-caldav.icloud.com/published/…" required>
+            <button type="submit" class="bouton principal">Ajouter</button>
+        </form>
+        <p class="discret">Le lien est enregistré chiffré. Toute personne qui l’obtiendrait pourrait lire ce calendrier : ne le partage pas.</p>
+    </details>
+</section>
+
 <section class="carte pile">
     <h2>Clés d’accès</h2>
     <p class="discret">Les appareils qui peuvent ouvrir l’appli avec Face ID.</p>

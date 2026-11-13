@@ -7,7 +7,7 @@ namespace Tdb;
 /** Création et mise à jour des tables de la base de données. */
 final class Schema
 {
-    public const VERSION = 1;
+    public const VERSION = 2;
 
     public static function tableExiste(Db $db, string $table): bool
     {
@@ -90,6 +90,40 @@ final class Schema
                     detail VARCHAR(255) NOT NULL,
                     ip VARCHAR(45) NOT NULL
                 )$fin",
+            ];
+            foreach ($tables as $sql) {
+                $db->pdo->exec($sql);
+            }
+        }
+
+        if ($version < 2) {
+            $tables = [
+                // Calendriers iCloud (lien de partage chiffré)
+                "CREATE TABLE IF NOT EXISTS calendars (
+                    id $id,
+                    name VARCHAR(60) NOT NULL,
+                    url_enc TEXT NOT NULL,
+                    created_at DATETIME NOT NULL,
+                    last_attempt_at DATETIME NULL,
+                    last_sync_at DATETIME NULL,
+                    last_error VARCHAR(255) NULL,
+                    event_count INT NOT NULL DEFAULT 0,
+                    fingerprint CHAR(64) NULL
+                )$fin",
+                // Copie locale des événements (fenêtre de quelques jours autour d'aujourd'hui)
+                "CREATE TABLE IF NOT EXISTS events (
+                    id $id,
+                    calendar_id INT NOT NULL,
+                    uid VARCHAR(255) NOT NULL,
+                    title VARCHAR(255) NOT NULL,
+                    location VARCHAR(255) NOT NULL,
+                    all_day TINYINT NOT NULL,
+                    starts_at DATETIME NOT NULL,
+                    ends_at DATETIME NOT NULL,
+                    day_start DATE NULL,
+                    day_end DATE NULL
+                )$fin",
+                'CREATE INDEX events_calendar ON events (calendar_id)',
             ];
             foreach ($tables as $sql) {
                 $db->pdo->exec($sql);

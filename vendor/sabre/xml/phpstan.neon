@@ -1,0 +1,12 @@
+includes:
+    - phpstan-baseline.neon
+
+parameters:
+  level: 8
+  paths:
+    - lib
+    - tests
+  ignoreErrors:
+    -
+      message: '#^Dynamic call to static method XMLReader::XML\(\)\.$#'
+      identifier: staticMethod.dynamicCall

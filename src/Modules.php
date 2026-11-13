@@ -15,7 +15,7 @@ final class Modules
         'agenda' => [
             'titre' => 'Agenda',
             'question' => 'Qu’est-ce qui est prévu cette semaine ?',
-            'mission' => 'M2',
+            'mission' => '',
             'icone' => 'agenda',
         ],
         'ecole' => [

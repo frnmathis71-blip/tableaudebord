@@ -239,6 +239,58 @@
         });
     });
 
+    // -------------------------------------------------------------------- Agenda
+
+    // À l'ouverture : mise à jour de l'agenda en arrière-plan ; la page se recharge si quelque chose a changé.
+    const journee = document.getElementById('journee');
+    const boutonActualiser = document.querySelector('[data-action="actualiser"]');
+
+    async function actualiserAgenda(forcer) {
+        const resultat = await api('/api/agenda/rafraichir', { forcer });
+        if (resultat.change) {
+            location.reload();
+        } else if (forcer) {
+            message(resultat.erreurs > 0 ? 'iCloud ne répond pas : affichage de la dernière version.' : 'Agenda à jour.', resultat.erreurs > 0);
+        }
+    }
+
+    if (journee) {
+        actualiserAgenda(false).catch(() => {});
+    }
+    if (boutonActualiser) {
+        boutonActualiser.addEventListener('click', () => {
+            boutonActualiser.classList.add('tourne');
+            occuper(boutonActualiser, () => actualiserAgenda(true))
+                .finally(() => boutonActualiser.classList.remove('tourne'));
+        });
+    }
+
+    const formCalendrier = document.getElementById('form-calendrier');
+    if (formCalendrier) {
+        formCalendrier.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const bouton = formCalendrier.querySelector('button');
+            occuper(bouton, async () => {
+                const resultat = await api('/api/agenda/ajouter', {
+                    nom: formCalendrier.nom.value,
+                    lien: formCalendrier.lien.value,
+                });
+                if (resultat.erreur_lecture) {
+                    alert('Calendrier ajouté, mais sa lecture a échoué : ' + resultat.erreur_lecture);
+                }
+                location.reload();
+            });
+        });
+    }
+
+    document.querySelectorAll('[data-action="supprimer-calendrier"]').forEach((bouton) => {
+        bouton.addEventListener('click', () => occuper(bouton, async () => {
+            if (!confirm(`Retirer le calendrier « ${bouton.dataset.nom} » ? Ses événements disparaîtront du tableau de bord (rien n’est supprimé sur ton iPhone).`)) return;
+            await api('/api/agenda/supprimer', { id: Number(bouton.dataset.id) });
+            location.reload();
+        }));
+    });
+
     // ------------------------------------------- Installation sur l'écran d'accueil
 
     if ('serviceWorker' in navigator) {

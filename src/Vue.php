@@ -78,6 +78,7 @@ final class Vue
             'haut' => '<path d="M12 19V5M5 12l7-7 7 7"/>',
             'bas' => '<path d="M12 5v14M5 12l7 7 7-7"/>',
             'oeil' => '<path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>',
+            'actualiser' => '<path d="M20 11a8 8 0 10-2.3 5.7M20 4v7h-7"/>',
             'cle' => '<circle cx="8" cy="15" r="4"/><path d="M11 12l9-9M16 7l3 3"/>',
         ];
 

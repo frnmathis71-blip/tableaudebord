@@ -56,6 +56,9 @@ final class App
         $this->db = Db::connecter($this->config->get('db'));
         $this->auth = new Auth($this->db, $this->config);
         $this->cles = new Passkeys($this->db, $this->config, $this->auth);
+        if (Schema::version($this->db) < Schema::VERSION) {
+            Schema::migrer($this->db);
+        }
 
         if ($methode === 'POST') {
             if (!Http::memeOrigine($this->config->origine())) {
@@ -93,6 +96,7 @@ final class App
     private function pageAujourdhui(): never
     {
         $this->exigerConnexion();
+        $agenda = new Agenda($this->db, $this->config);
         Vue::page('aujourdhui', [
             'titre' => 'Aujourd’hui',
             'connecte' => true,
@@ -100,6 +104,9 @@ final class App
             'csrf' => $this->auth->csrf(),
             'date' => Vue::dateLongue(Clock::now()),
             'modules' => (new Modules($this->db))->disposition(),
+            'semaine' => Planning::semaine($agenda->evenements(), Clock::now()),
+            'agenda' => $agenda->etat(),
+            'maintenant' => Clock::now(),
         ]);
     }
 
@@ -143,6 +150,7 @@ final class App
             'sessions' => $this->auth->sessions(),
             'sessionActuelle' => $session['token_hash'] ?? '',
             'jours' => $this->config->joursSession(),
+            'calendriers' => (new Agenda($this->db, $this->config))->calendriers(),
         ]);
     }
 
@@ -189,6 +197,37 @@ final class App
                     $this->auth->revoquer((string) ($corps['id'] ?? ''));
                     $this->db->journal('session_revoquee');
                 }
+                Http::json(['ok' => true]);
+                // no break
+            case '/api/agenda/rafraichir':
+                $forcer = ($corps['forcer'] ?? false) === true;
+                $resultat = (new Agenda($this->db, $this->config))->synchroniser($forcer ? 30 : Agenda::DELAI_OUVERTURE);
+                Http::json(['ok' => true] + $resultat);
+                // no break
+            case '/api/agenda/ajouter':
+                $agenda = new Agenda($this->db, $this->config);
+                $nom = trim((string) ($corps['nom'] ?? ''));
+                $lien = $agenda->lienValide((string) ($corps['lien'] ?? ''));
+                if ($nom === '' || mb_strlen($nom) > 60) {
+                    Http::erreurJson('Donne un nom au calendrier (60 caractères au plus).');
+                }
+                if ($lien === null) {
+                    Http::erreurJson('Ce lien n’est pas un lien de partage iCloud (il commence par webcal:// et contient icloud.com).');
+                }
+                $id = $agenda->ajouter($nom, $lien);
+                $this->db->journal('source_ajoutee', 'agenda « ' . $nom . ' »');
+                $resultat = $agenda->synchroniser(0, 'ajout');
+                $cal = $this->db->ligne('SELECT last_error FROM calendars WHERE id = ?', [$id]);
+                Http::json(['ok' => true, 'erreur_lecture' => $cal['last_error'] ?? null] + $resultat);
+                // no break
+            case '/api/agenda/supprimer':
+                $id = (int) ($corps['id'] ?? 0);
+                $cal = $this->db->ligne('SELECT name FROM calendars WHERE id = ?', [$id]);
+                if ($cal === null) {
+                    Http::erreurJson('Calendrier introuvable.', 404);
+                }
+                (new Agenda($this->db, $this->config))->supprimer($id);
+                $this->db->journal('source_supprimee', 'agenda « ' . $cal['name'] . ' »');
                 Http::json(['ok' => true]);
                 // no break
             case '/api/cle/supprimer':

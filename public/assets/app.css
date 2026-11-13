@@ -110,7 +110,8 @@ h3 { font-size: 17px; font-weight: 650; }
 /* --- Modules --- */
 .modules { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
 
-.module { display: flex; align-items: center; gap: 14px; }
+.module { display: block; }
+.module-ligne { display: flex; align-items: center; gap: 14px; }
 .module.masque { display: none; }
 
 .module-icone {
@@ -132,7 +133,8 @@ h3 { font-size: 17px; font-weight: 650; }
 .module-outils { display: none; flex: none; gap: 6px; }
 
 .organisation .module-outils { display: flex; flex-direction: row; }
-.organisation .module.masque { display: flex; opacity: 0.45; }
+.organisation .module.masque { display: block; opacity: 0.45; }
+.organisation .module-contenu { display: none; }
 .organisation .module-texte .pastille,
 .organisation .module-texte .discret { display: none; }
 
@@ -258,3 +260,49 @@ input::placeholder { color: rgba(191, 180, 165, 0.6); }
     .carte, .onglets, .message { background: #241b14; }
     .vide { background: #1a140f; }
 }
+
+/* --- Agenda --- */
+.carte-titre { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 10px; }
+.journee .alerte { margin-bottom: 10px; }
+.pastille.libre { color: var(--ok); white-space: nowrap; }
+
+.evenements { list-style: none; margin: 0; padding: 0; }
+.evenement { display: flex; gap: 12px; padding: 10px 0; border-top: 1px solid var(--bord); }
+.evenement:first-child { border-top: 0; }
+.ev-heure {
+    flex: none; width: 52px; font-variant-numeric: tabular-nums; font-weight: 600; font-size: 15px;
+    display: flex; flex-direction: column; color: var(--texte);
+}
+.ev-heure small { color: var(--discret); font-weight: 500; font-size: 13px; }
+.ev-texte { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; overflow-wrap: anywhere; }
+.ev-texte strong { font-weight: 600; }
+.en-conflit .ev-heure { color: var(--danger); }
+.badge-conflit {
+    align-self: flex-start; font-size: 12px; font-weight: 700; color: #2a0d07;
+    background: var(--danger); border-radius: 999px; padding: 2px 8px;
+}
+
+.etat-source { margin-top: 10px; font-size: 13px; color: var(--discret); }
+.etat-source.erreur, .texte-erreur { color: #ffd6cc; }
+.texte-erreur { display: block; font-size: 14px; }
+
+.module-contenu { margin-top: 14px; }
+.semaine { list-style: none; margin: 0; padding: 0; }
+.semaine > li { border-top: 1px solid var(--bord); }
+.semaine > li:first-child { border-top: 0; }
+.semaine summary {
+    display: flex; align-items: center; justify-content: space-between; gap: 8px;
+    min-height: 48px; padding: 6px 0; cursor: pointer; list-style: none;
+}
+.semaine summary::-webkit-details-marker { display: none; }
+.jour-nom { font-weight: 600; }
+.jour-infos { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: flex-end; text-align: right; }
+.jour-infos .discret { font-size: 13px; }
+.vide-jour { padding: 0 0 10px; }
+.semaine .evenements { padding-bottom: 6px; }
+.aide-libre { margin-top: 8px; font-size: 13px; }
+
+.etapes { margin: 4px 0 12px; padding-left: 22px; display: flex; flex-direction: column; gap: 6px; }
+.entete .outil { flex: none; }
+.tourne .icone { animation: tourner 0.9s linear infinite; }
+@keyframes tourner { to { transform: rotate(360deg); } }

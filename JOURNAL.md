@@ -9,7 +9,7 @@ Il ne contient jamais de mot de passe, de jeton ni de donnée bancaire.
 |---|---|---|
 | M0 | Cadrage (aucun code) | Terminée le 10/11/2026 (réponses reçues) |
 | M1 | Socle de l'application | Code écrit et testé le 10/11/2026 – en attente de la mise en ligne par Mathis et de ses vérifications sur iPhone |
-| M2 | Agenda Apple (iCloud) | En cours – accord reçu le 13/11/2026, questions préalables posées |
+| M2 | Agenda Apple (iCloud) | Code écrit et testé le 13/11/2026 – en attente des vérifications de Mathis sur iPhone |
 | M3 | École (PRONOTE) | Non commencée |
 | M4 | Pro et URSSAF | Non commencée |
 | M5 | Recherche de stage | Non commencée |
@@ -166,12 +166,40 @@ Non testé à ce stade (impossible sans la mise en ligne) :
 
 ## M2 – Agenda Apple (iCloud)
 
-### 13/11/2026 – Accord et questions posées (en attente)
+### 13/11/2026 – Accord, questions posées et réponses
 
 | N° | Question | Recommandation | Réponse de Mathis |
 |---|---|---|---|
-| 1 | Accès : A lien de partage public par calendrier / B mot de passe d'application Apple (CalDAV) | A | En attente |
-| 2 | Calendriers à lire : A tous / B une liste | — | En attente |
-| 3 | Rafraîchissement : A à l'ouverture + toutes les heures / B service extérieur toutes les 15 min | A | En attente |
-| 4 | Plage du temps libre : A 8h-20h / B 9h-18h / C autre | A | En attente |
-| 5 | Conflits : A événements à heure fixe seulement / B y compris journées entières | A | En attente |
+| 1 | Accès : A lien de partage public par calendrier / B mot de passe d'application Apple (CalDAV) | A | A – lien de partage public |
+| 2 | Calendriers à lire : A tous / B une liste | — | A – tous |
+| 3 | Rafraîchissement : A à l'ouverture + toutes les heures / B service extérieur toutes les 15 min | A | A – à l'ouverture + toutes les heures |
+| 4 | Plage du temps libre : A 8h-20h / B 9h-18h / C autre | A | A – 8 h-20 h tous les jours |
+| 5 | Conflits : A événements à heure fixe seulement / B y compris journées entières | A | A – heures fixes seulement |
+
+### 13/11/2026 – Réalisation de M2
+
+Ce qui a été fait :
+- Ajout de calendriers iCloud par leur lien de partage (Réglages → Agenda iCloud), lien stocké chiffré.
+  Seuls les liens `icloud.com` en https sont acceptés, y compris lors des redirections.
+- Lecture des événements avec la bibliothèque sabre/vobject (licence BSD) : répétitions, exceptions,
+  occurrences déplacées, journées entières, fuseaux horaires.
+- Copie locale des événements de la veille à J+15 : la page s'affiche vite et reste lisible si iCloud ne répond pas.
+- Mise à jour à l'ouverture de l'appli (au plus une fois toutes les 3 minutes, en arrière-plan), bouton
+  « Actualiser », et tâche planifiée `cron.php` toutes les heures (à créer chez OVH, guide étape 7).
+- Page « Aujourd'hui » : « Ta journée » (événements, conflits, temps libre restant, date de mise à jour).
+- Module Agenda : 7 jours à venir, nombre d'événements, conflits et temps libre (8 h – 20 h) par jour.
+- Journal des accès : chaque lecture d'un calendrier et chaque erreur sont enregistrées.
+
+Décisions techniques prises sans question :
+- Fenêtre de copie : veille à J+15. Temps libre du jour : seulement le temps restant à partir de maintenant.
+- Les journées entières ne réduisent pas le temps libre (cohérent avec la réponse 5A sur les conflits).
+
+Tests automatiques (données fictives) – tous réussis :
+- 51 tests internes du socle, 49 tests de l'agenda (fuseaux, heure d'été et d'hiver, répétitions, conflits,
+  temps libre, liens refusés, panne d'iCloud), 87 tests dans le navigateur (dont 17 pour l'agenda : ajout,
+  conflit fictif détecté, heures de Paris, événement ajouté « sur l'iPhone » visible à l'ouverture,
+  titre piégé neutralisé, panne avec date de dernière mise à jour).
+
+Non testé (impossible sans la mise en ligne) :
+- Vrai lien iCloud ; délai réel entre la création d'un événement sur l'iPhone et sa publication par Apple.
+- Tâche planifiée OVH (menus du guide écrits sans accès au site d'OVH).

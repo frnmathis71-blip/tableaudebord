@@ -8,6 +8,7 @@
 const { chromium, devices } = require('playwright');
 const { execFileSync } = require('child_process');
 const path = require('path');
+const fs = require('fs');
 
 const URL_APPLI = process.env.TDB_URL || 'http://localhost:8765';
 const SOCKET = process.env.TDB_DB_SOCKET;
@@ -54,7 +55,8 @@ const chemin = (page) => new URL(page.url()).pathname;
     console.log('Installation');
     const contexte = await nouveauContexte();
     const page = await contexte.newPage();
-    const erreursConsole = [];
+    const erreursConsole = global.erreursConsole = [];
+    global.pagePrincipale = page;
     page.on('console', (m) => { if (m.type() === 'error') erreursConsole.push(m.text()); });
     page.on('pageerror', (e) => erreursConsole.push(String(e)));
 
@@ -174,6 +176,79 @@ const chemin = (page) => new URL(page.url()).pathname;
     verifier('cookie de session illisible par les scripts (HttpOnly)', session && session.httpOnly && session.sameSite === 'Lax');
     const jours = (session.expires - Date.now() / 1000) / 86400;
     verifier(`session de 7 jours (mesuré : ${jours.toFixed(2)} jours)`, jours > 6.9 && jours <= 7);
+
+    // ------------------------------------------------------------ Agenda (M2)
+    console.log('Agenda (calendrier fictif)');
+    const TMP = path.join(__dirname, '.tmp');
+    const AGENDA_FICTIF = process.env.TDB_ICS_URL || 'http://localhost:8766/agenda.php';
+    // Le calendrier fictif est servi en local : on l'autorise dans la configuration de test.
+    const fichierConfig = process.env.TDB_CONFIG_FILE || path.join(TMP, 'config.php');
+    fs.writeFileSync(fichierConfig, fs.readFileSync(fichierConfig, 'utf8')
+        .replace("'session_days' => 7,", "'session_days' => 7,\n  'calendar_hosts' => array('localhost'),"));
+    ['ajout.ics', 'panne'].forEach((f) => fs.rmSync(path.join(TMP, f), { force: true }));
+    await page.waitForTimeout(2500); // PHP garde la configuration en mémoire jusqu'à 2 secondes
+
+    await page.goto(URL_APPLI + '/');
+    verifier('sans agenda : invitation à le connecter', (await page.locator('.vide-titre').innerText()) === 'Aucun agenda connecté');
+
+    const refuse = await appel(contexte, '/api/agenda/ajouter',
+        { ...memeSite, 'X-CSRF': await page.locator('meta[name="csrf"]').getAttribute('content') },
+        { nom: 'Pirate', lien: 'https://exemple.fr/agenda.ics' });
+    verifier(`lien qui n’est pas iCloud refusé (code ${refuse.status()})`, refuse.status() === 400);
+    const sansConnexion = await appel(inconnu, '/api/agenda/ajouter', memeSite, { nom: 'X', lien: AGENDA_FICTIF });
+    verifier('ajout de calendrier refusé sans connexion', sansConnexion.status() === 401);
+
+    await page.goto(URL_APPLI + '/reglages#agenda');
+    await page.fill('#cal-nom', 'Perso (fictif)');
+    await page.fill('#cal-lien', AGENDA_FICTIF);
+    await Promise.all([page.waitForEvent('load'), page.click('#form-calendrier button')]);
+    const ligneCal = page.locator('#agenda .liste li').first();
+    verifier('calendrier ajouté et lu (7 événements fictifs)', (await ligneCal.innerText()).includes('7 événements'));
+    await page.screenshot({ path: path.join(CAPTURES, '8-reglages-agenda.png'), fullPage: true });
+
+    await page.goto(URL_APPLI + '/');
+    const journee = page.locator('#journee');
+    const texteJournee = await journee.innerText();
+    verifier('« Ta journée » affiche les événements du jour', texteJournee.includes('Cours d’anglais (fictif)') && texteJournee.includes('Sport'));
+    verifier('heures en heure de Paris (09:00 → 10:30)', texteJournee.includes('09:00') && texteJournee.includes('10:30') && texteJournee.includes('18:00'));
+    verifier('le conflit fictif (cours 9 h–10 h 30 / rendez-vous 10 h–11 h) est détecté',
+        (await journee.locator('.en-conflit').count()) === 2 && texteJournee.includes('se chevauchent'));
+    verifier('temps libre affiché', /de libre/.test(texteJournee));
+    verifier('date de mise à jour affichée', (await journee.locator('.etat-source').innerText()).startsWith('Agenda mis à jour'));
+    const joursSemaine = page.locator('.module[data-id="agenda"] .semaine > li');
+    verifier('semaine à venir : 7 jours', (await joursSemaine.count()) === 7);
+    verifier('demain : l’anniversaire (toute la journée) est affiché',
+        (await joursSemaine.nth(1).locator('summary').innerText()).startsWith('Demain')
+        && (await joursSemaine.nth(1).innerHTML()).includes('Anniversaire fictif'));
+    verifier('dans 2 jours : l’entretien de stage', (await joursSemaine.nth(2).innerHTML()).includes('Entretien de stage (fictif)'));
+    await page.screenshot({ path: path.join(CAPTURES, '7-agenda.png'), fullPage: true });
+
+    // Simulation : un événement est créé sur l'iPhone, puis l'appli est rouverte plus tard.
+    fs.writeFileSync(path.join(TMP, 'ajout.ics'),
+        'BEGIN:VEVENT\r\nUID:ajout-iphone\r\nDTSTART;TZID=Europe/Paris:{AUJOURDHUI}T120000\r\nDTEND;TZID=Europe/Paris:{AUJOURDHUI}T123000\r\n'
+        + 'SUMMARY:Déjeuner ajouté sur l’iPhone\r\nEND:VEVENT\r\n'
+        + 'BEGIN:VEVENT\r\nUID:piege\r\nDTSTART;TZID=Europe/Paris:{AUJOURDHUI}T130000\r\nDTEND;TZID=Europe/Paris:{AUJOURDHUI}T133000\r\n'
+        + 'SUMMARY:<img src=x onerror="document.title=\'pirate\'">\r\nEND:VEVENT\r\n');
+    sql("UPDATE calendars SET last_attempt_at = '2020-01-01 00:00:00'");
+    await page.goto(URL_APPLI + '/');
+    await page.waitForFunction(() => document.body.innerText.includes('Déjeuner ajouté sur l’iPhone'), null, { timeout: 10000 }).catch(() => {});
+    verifier('événement ajouté sur l’iPhone : apparaît à l’ouverture de l’appli',
+        (await page.locator('#journee').innerText()).includes('Déjeuner ajouté sur l’iPhone'));
+    verifier('un titre piégé s’affiche comme du texte, sans s’exécuter',
+        (await page.locator('#journee').innerText()).includes('<img src=x') && (await page.title()) !== 'pirate');
+
+    // Panne d'iCloud : les événements restent visibles avec la date de dernière mise à jour.
+    fs.writeFileSync(path.join(TMP, 'panne'), '1');
+    sql("UPDATE calendars SET last_attempt_at = '2020-01-01 00:00:00'");
+    await page.click('[data-action="actualiser"]');
+    await page.locator('#message.erreur').waitFor();
+    verifier('panne : message clair', (await page.locator('#message').innerText()).includes('iCloud ne répond pas'));
+    await page.reload();
+    verifier('panne : les événements restent affichés', (await page.locator('#journee').innerText()).includes('Cours d’anglais (fictif)'));
+    verifier('panne : date de dernière mise à jour affichée', (await page.locator('.etat-source.erreur').innerText()).includes('Dernière mise à jour'));
+    await page.screenshot({ path: path.join(CAPTURES, '9-agenda-panne.png') });
+    fs.rmSync(path.join(TMP, 'panne'));
+    fs.rmSync(path.join(TMP, 'ajout.ics'));
 
     // ---------------------------------------------------- Déconnexion / connexion
     console.log('Déconnexion et connexion');
@@ -332,7 +407,10 @@ const chemin = (page) => new URL(page.url()).pathname;
     console.log(`\nRésultat : ${reussis} réussis, ${echecs.length} échoués`);
     echecs.forEach((e) => console.log('  - ' + e));
     process.exit(echecs.length === 0 ? 0 : 1);
-})().catch((e) => {
+})().catch(async (e) => {
     console.error('Test interrompu :', e);
+    if (global.erreursConsole?.length) console.error('Console :', global.erreursConsole.join(' | '));
+    const msg = await global.pagePrincipale?.locator('#message').innerText().catch(() => '');
+    if (msg) console.error('Message affiché :', msg);
     process.exit(2);
 });

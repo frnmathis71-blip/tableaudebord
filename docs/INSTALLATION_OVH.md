@@ -61,6 +61,21 @@ Dans Safari : bouton **Partager** (carré avec une flèche) → **Sur l'écran d
 Ouvre ensuite l'appli depuis son icône : elle te redemande Face ID une première fois (l'icône a sa propre mémoire,
 séparée de Safari), puis seulement tous les 7 jours.
 
+## Étape 7 – Mise à jour automatique de l'agenda (toutes les heures)
+
+Espace client OVH → ton hébergement → onglet **Plus** → **Tâches planifiées - Cron** → **Ajouter une planification** :
+- **Commande à exécuter** : `tableaubord/cron.php` (le dossier de l'appli, puis `cron.php`) ;
+- **Langage** : PHP 8.x (la même version que le site) ;
+- **Fréquence** : toutes les heures ;
+- **Alertes par e-mail** : activées, pour être prévenu si la tâche échoue.
+
+Sans cette tâche, l'agenda se met quand même à jour à chaque ouverture de l'appli.
+
+## Mettre à jour l'appli
+
+Connecte-toi en SSH, puis : `cd ~/tableaubord && git pull`. La base de données se met à jour toute seule
+à la première ouverture qui suit.
+
 ## En cas de problème
 
 | Ce que tu vois | Cause probable | Quoi faire |
