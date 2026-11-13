@@ -10,7 +10,7 @@ Il ne contient jamais de mot de passe, de jeton ni de donnée bancaire.
 | M0 | Cadrage (aucun code) | Terminée le 10/11/2026 (réponses reçues) |
 | M1 | Socle de l'application | Code écrit et testé le 10/11/2026 – en attente de la mise en ligne par Mathis et de ses vérifications sur iPhone |
 | M2 | Agenda Apple (iCloud) | Code écrit et testé le 13/11/2026 – en attente des vérifications de Mathis sur iPhone |
-| M3 | École (PRONOTE) | Non commencée |
+| M3 | École (PRONOTE) | En cours – « OK M3 » reçu le 13/11/2026, test de faisabilité présenté, choix en attente |
 | M4 | Pro et URSSAF | Non commencée |
 | M5 | Recherche de stage | Non commencée |
 | M6 | Brief du matin et notifications | Non commencée |
@@ -207,4 +207,26 @@ Non testé (impossible sans la mise en ligne) :
 ### 13/11/2026 – Informations reçues pour M3
 
 - Adresse PRONOTE et ENT régional reçus. Ils ne sont volontairement pas recopiés ici, tant que le dépôt est public.
-- M3 non commencée : en attente de l'accord écrit « OK M3 ».
+- Accord « OK M3 » reçu le 13/11/2026.
+
+## M3 – École (PRONOTE)
+
+### 13/11/2026 – Test de faisabilité (sans identifiants)
+
+- Export iCal : indisponible (réponse M0).
+- Bibliothèque non officielle pronotepy (Python, licence MIT) : maintenue (version du 03/09/2026),
+  gère l'ENT régional de Mathis (connexion EduConnect) et la connexion par QR code de l'appli PRONOTE.
+- Pawnote (JavaScript) : autre bibliothèque non officielle, dernière version en 09/2025.
+- Aucune bibliothèque PHP maintenue trouvée : le connecteur ne peut pas tourner dans l'appli PHP elle-même.
+- Depuis mon environnement de travail, le serveur PRONOTE et l'ENT sont injoignables : aucun essai de connexion réel.
+- Point de vigilance relevé pour M2 aussi : selon le forum OVH (non officiel), les accès réseau sortants des tâches
+  planifiées et du SSH sont bridés ; la mise à jour horaire de l'agenda reste à vérifier.
+
+### 13/11/2026 – Questions posées (en attente)
+
+| N° | Question | Recommandation | Réponse de Mathis |
+|---|---|---|---|
+| 1 | Où tourne le connecteur PRONOTE : A Python sur OVH / B petit serveur en Europe / C GitHub Actions / D pas d'automatique | A si le test réussit, sinon B | En attente |
+| 2 | Connexion : A QR code de l'appli PRONOTE / B identifiants ENT | A | En attente |
+| 3 | Risque d'un outil non officiel accepté : A oui / B non | — | En attente |
+| — | Commandes de test à lancer par Mathis en SSH (Python présent ? PRONOTE joignable ?) | — | En attente |
