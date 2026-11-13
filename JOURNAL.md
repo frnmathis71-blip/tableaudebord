@@ -9,7 +9,7 @@ Il ne contient jamais de mot de passe, de jeton ni de donnée bancaire.
 |---|---|---|
 | M0 | Cadrage (aucun code) | Terminée le 10/11/2026 (réponses reçues) |
 | M1 | Socle de l'application | Code écrit et testé le 10/11/2026 – en attente de la mise en ligne par Mathis et de ses vérifications sur iPhone |
-| M2 | Agenda Apple (iCloud) | Non commencée |
+| M2 | Agenda Apple (iCloud) | En cours – accord reçu le 13/11/2026, questions préalables posées |
 | M3 | École (PRONOTE) | Non commencée |
 | M4 | Pro et URSSAF | Non commencée |
 | M5 | Recherche de stage | Non commencée |
@@ -154,3 +154,24 @@ Non testé à ce stade (impossible sans la mise en ligne) :
 - Tests : 51 tests internes et 70 tests dans le navigateur réussis.
 - Envoyé sur la branche de travail (pas encore en ligne chez OVH) ; en attente de la validation visuelle de Mathis
   (A garder / B ajuster / C revenir à l'ancien style, facile à annuler).
+
+### 13/11/2026 – Mise en ligne (suite)
+
+- Sous-adresse `tableaubord.codenyr.fr` active en https (dossier racine `~/tableaubord`). Code cloné d'abord par
+  erreur dans `~/tableaudebord` ; commande corrigée donnée.
+- Constat : le dépôt GitHub est devenu public (il était privé le 10/11). Aucun secret dedans, mais le journal est
+  lisible par tous. Question posée (A repasser en privé, recommandé / B laisser public) : en attente.
+- Pas de fichier `.env` : la configuration est créée par la page d'installation dans `~/tableaudebord-config.php`.
+- M1 : installation sur iPhone et 5 vérifications pas encore faites ; Mathis demande de passer à M2.
+
+## M2 – Agenda Apple (iCloud)
+
+### 13/11/2026 – Accord et questions posées (en attente)
+
+| N° | Question | Recommandation | Réponse de Mathis |
+|---|---|---|---|
+| 1 | Accès : A lien de partage public par calendrier / B mot de passe d'application Apple (CalDAV) | A | En attente |
+| 2 | Calendriers à lire : A tous / B une liste | — | En attente |
+| 3 | Rafraîchissement : A à l'ouverture + toutes les heures / B service extérieur toutes les 15 min | A | En attente |
+| 4 | Plage du temps libre : A 8h-20h / B 9h-18h / C autre | A | En attente |
+| 5 | Conflits : A événements à heure fixe seulement / B y compris journées entières | A | En attente |
