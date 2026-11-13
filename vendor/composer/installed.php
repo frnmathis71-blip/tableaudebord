@@ -3,7 +3,7 @@
         'name' => 'perso/tableaudebord',
         'pretty_version' => 'dev-claude/life-dashboard-1v2bum',
         'version' => 'dev-claude/life-dashboard-1v2bum',
-        'reference' => 'bba0c5d978b32056ee5c51ab438f46712cc1f16d',
+        'reference' => '8bab8f7d0232b25becfcdd99d2b81f54ff9e1dc1',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -22,7 +22,7 @@
         'perso/tableaudebord' => array(
             'pretty_version' => 'dev-claude/life-dashboard-1v2bum',
             'version' => 'dev-claude/life-dashboard-1v2bum',
-            'reference' => 'bba0c5d978b32056ee5c51ab438f46712cc1f16d',
+            'reference' => '8bab8f7d0232b25becfcdd99d2b81f54ff9e1dc1',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

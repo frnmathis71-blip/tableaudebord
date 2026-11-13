@@ -25,5 +25,5 @@ d'installation.
 TDB_DB_SOCKET=/chemin/vers/mysql.sock tests/lancer.sh
 ```
 
-Il faut PHP 8.1 ou plus, Node avec Playwright, et une base MariaDB locale de test (la base `tdb_test` est vidée à
+Il faut PHP 8.2 ou plus, Node avec Playwright, et une base MariaDB locale de test (la base `tdb_test` est vidée à
 chaque lancement).

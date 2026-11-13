@@ -17,7 +17,7 @@ Tu ne donnes aucun mot de passe à personne : tout se passe dans ton espace clie
 
 ## Étape 2 – Vérifier la version de PHP
 
-Onglet **Informations générales** → **Version PHP** → choisis **8.1 ou plus** (8.3 conseillé).
+Onglet **Informations générales** → **Version PHP** → choisis **8.2 ou plus** (8.4 conseillé).
 Si ton site actuel a besoin d'une version plus ancienne, arrête-toi et dis-le-moi.
 
 ## Étape 3 – Créer la base de données

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e7676e6988458b7c995793f8581f65c5",
+    "content-hash": "4907fc560e3bd5ca0a18ff4388d5c97f",
     "packages": [
         {
             "name": "lbuchs/webauthn",
@@ -297,7 +297,7 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
-        "php": ">=8.1",
+        "php": ">=8.2",
         "ext-openssl": "*",
         "ext-pdo": "*"
     },
